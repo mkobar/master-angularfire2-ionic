@@ -1,17 +1,60 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from 'angularfire2/auth';
+import {
+  AngularFireDatabase,
+  AngularFireObject,
+  AngularFireList
+} from 'angularfire2/database';
+import * as firebase from 'firebase';
 
-/*
-  Generated class for the BillProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class BillProvider {
+  public billList: AngularFireList<any>;
+  public userId: string;
 
-  constructor(public http: HttpClient) {
-    console.log('Hello BillProvider Provider');
+  constructor(
+    public afAuth: AngularFireAuth,
+    public afDatabase: AngularFireDatabase
+  ) {
+    this.afAuth.authState.subscribe(user => {
+      this.userId = user.uid;
+      this.billList = this.afDatabase.list(`/userProfile/${user.uid}/billList`);
+    });
   }
 
+  getBillList(): AngularFireList<any> {
+    return this.billList;
+  }
+
+  getBill(billId: string): AngularFireObject<any> {
+    return this.afDatabase.object(
+      `/userProfile/${this.userId}/billList/${billId}`
+    );
+  }
+
+  createBill(
+    name: string,
+    amount: number,
+    dueDate: string = null,
+    paid: boolean = false
+  ): Promise<any> {
+    const newBillRef: firebase.database.ThenableReference = this.billList.push(
+      {}
+    );
+    return newBillRef.set({
+      name,
+      amount,
+      dueDate,
+      paid,
+      id: newBillRef.key
+    });
+  }
+
+  removeBill(billId: string): Promise<any> {
+    return this.billList.remove(billId);
+  }
+
+  payBill(billId: string): Promise<any> {
+    return this.billList.update(billId, { paid: true });
+  }
 }
