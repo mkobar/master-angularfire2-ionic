@@ -5,7 +5,13 @@ import {
   AngularFireObject,
   AngularFireList
 } from 'angularfire2/database';
-import * as firebase from 'firebase';
+import {
+  AngularFireStorage,
+  AngularFireStorageReference,
+  AngularFireUploadTask
+} from 'angularfire2/storage';
+import firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class BillProvider {
@@ -14,7 +20,8 @@ export class BillProvider {
 
   constructor(
     public afAuth: AngularFireAuth,
-    public afDatabase: AngularFireDatabase
+    public afDatabase: AngularFireDatabase,
+    public afStorage: AngularFireStorage
   ) {
     this.afAuth.authState.subscribe(user => {
       this.userId = user.uid;
@@ -58,19 +65,18 @@ export class BillProvider {
     return this.billList.update(billId, { paid: true });
   }
 
-  takeBillPhoto(billId: string, imageURL: string): any {
-    const storageRef: firebase.storage.Reference = firebase
-      .storage()
-      .ref(`${this.userId}/${billId}/billPicture/`);
-    return storageRef
-      .putString(imageURL, 'base64', {
-        contentType: 'image/png'
-      })
-      .then(pictureSnapshot => {
-        this.billList.update(billId, { picture: pictureSnapshot.downloadURL });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  takeBillPhoto(billId: string, imageURL: string): AngularFireUploadTask {
+    const storageRef: AngularFireStorageReference = this.afStorage.ref(
+      `${this.userId}/${billId}/billPicture/`
+    );
+
+    return storageRef.putString(imageURL, 'base64', {
+      contentType: 'image/png'
+    });
+  }
+
+  storeDownloadUrl(billId: string, downloadUrl: string): Promise<any> {
+    console.log(billId, downloadUrl);
+    return this.billList.update(billId, { picture: downloadUrl });
   }
 }

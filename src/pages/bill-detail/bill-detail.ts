@@ -109,7 +109,15 @@ export class BillDetailPage {
         })
         .then(
           imageData => {
-            this.billProvider.takeBillPhoto(this.billId, imageData);
+            this.billProvider
+              .takeBillPhoto(this.billId, imageData)
+              .then()
+              .then(res => {
+                this.billProvider.storeDownloadUrl(
+                  this.billId,
+                  res.metadata.downloadURLs[0]
+                );
+              });
           },
           error => {
             console.log('ERROR -> ' + JSON.stringify(error));
