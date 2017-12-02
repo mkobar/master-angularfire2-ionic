@@ -57,4 +57,20 @@ export class BillProvider {
   payBill(billId: string): Promise<any> {
     return this.billList.update(billId, { paid: true });
   }
+
+  takeBillPhoto(billId: string, imageURL: string): any {
+    const storageRef: firebase.storage.Reference = firebase
+      .storage()
+      .ref(`${this.userId}/${billId}/billPicture/`);
+    return storageRef
+      .putString(imageURL, 'base64', {
+        contentType: 'image/png'
+      })
+      .then(pictureSnapshot => {
+        this.billList.update(billId, { picture: pictureSnapshot.downloadURL });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 }

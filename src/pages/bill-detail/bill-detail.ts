@@ -10,6 +10,8 @@ import {
   AlertController
 } from 'ionic-angular';
 import { BillProvider } from '../../providers/bill/bill';
+import { AuthProvider } from '../../providers/auth/auth';
+import { Camera } from '@ionic-native/camera';
 
 @IonicPage({
   segment: 'bill/:billId'
@@ -21,6 +23,7 @@ import { BillProvider } from '../../providers/bill/bill';
 export class BillDetailPage {
   public bill: {};
   public billId: string;
+  public placeholderPicture: string = 'assets/img/debt-collector.jpg';
 
   constructor(
     public navCtrl: NavController,
@@ -28,7 +31,9 @@ export class BillDetailPage {
     public actionCtrl: ActionSheetController,
     public platform: Platform,
     public alertCtrl: AlertController,
-    public billProvider: BillProvider
+    public billProvider: BillProvider,
+    public authProvider: AuthProvider,
+    public cameraPlugin: Camera
   ) {}
 
   ionViewDidEnter() {
@@ -73,5 +78,43 @@ export class BillDetailPage {
       ]
     });
     action.present();
+  }
+  uploadPicture(billId): void {
+    if (this.authProvider.getUser().isAnonymous == true) {
+      const alert: Alert = this.alertCtrl.create({
+        message:
+          'If you want to continue you will need to provide an email and create a password',
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: 'OK',
+            handler: data => {
+              this.navCtrl.push('SignupPage');
+            }
+          }
+        ]
+      });
+      alert.present();
+    } else {
+      this.cameraPlugin
+        .getPicture({
+          quality: 95,
+          destinationType: this.cameraPlugin.DestinationType.DATA_URL,
+          sourceType: this.cameraPlugin.PictureSourceType.CAMERA,
+          allowEdit: true,
+          encodingType: this.cameraPlugin.EncodingType.PNG,
+          targetWidth: 500,
+          targetHeight: 500,
+          saveToPhotoAlbum: true
+        })
+        .then(
+          imageData => {
+            this.billProvider.takeBillPhoto(this.billId, imageData);
+          },
+          error => {
+            console.log('ERROR -> ' + JSON.stringify(error));
+          }
+        );
+    }
   }
 }
