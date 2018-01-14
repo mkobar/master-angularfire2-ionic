@@ -3,15 +3,14 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import {
   AngularFireDatabase,
   AngularFireObject,
-  AngularFireList
+  AngularFireList,
 } from 'angularfire2/database';
 import {
   AngularFireStorage,
   AngularFireStorageReference,
-  AngularFireUploadTask
+  AngularFireUploadTask,
 } from 'angularfire2/storage';
 import firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class BillProvider {
@@ -53,7 +52,7 @@ export class BillProvider {
       amount,
       dueDate,
       paid,
-      id: newBillRef.key
+      id: newBillRef.key,
     });
   }
 
@@ -71,12 +70,11 @@ export class BillProvider {
     );
 
     return storageRef.putString(imageURL, 'base64', {
-      contentType: 'image/png'
+      contentType: 'image/png',
     });
   }
 
   storeDownloadUrl(billId: string, downloadUrl: string): Promise<any> {
-    console.log(billId, downloadUrl);
     return this.billList.update(billId, { picture: downloadUrl });
   }
 }
