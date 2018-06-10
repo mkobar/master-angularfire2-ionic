@@ -1,25 +1,72 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the SignupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {
+  IonicPage,
+  NavController,
+  Loading,
+  LoadingController,
+  Alert,
+  AlertController
+} from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @IonicPage()
 @Component({
   selector: 'page-signup',
-  templateUrl: 'signup.html',
+  templateUrl: 'signup.html'
 })
 export class SignupPage {
+  public signupForm: FormGroup;
+  public loading: Loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    formBuilder: FormBuilder,
+    public authProvider: AuthProvider
+  ) {
+    this.signupForm = formBuilder.group({
+      email: ['', Validators.required],
+      password: [
+        '',
+        Validators.compose([Validators.minLength(6), Validators.required])
+      ]
+    });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SignupPage');
-  }
+  signupUser(): void {
+    if (!this.signupForm.valid) {
+      console.log(this.signupForm.value);
+    } else {
+      const email: string = this.signupForm.value.email;
+      const password: string = this.signupForm.value.password;
 
+      this.authProvider.linkAccount(email, password).then(
+        () => {
+          this.loading.dismiss().then(() => {
+            this.navCtrl.pop();
+          });
+        },
+        error => {
+          this.loading.dismiss().then(() => {
+            var errorMessage: string = error.message;
+            const alert: Alert = this.alertCtrl.create({
+              message: errorMessage,
+              buttons: [
+                {
+                  text: 'Ok',
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+          });
+        }
+      );
+
+      this.loading = this.loadingCtrl.create();
+      this.loading.present();
+    }
+  }
 }
