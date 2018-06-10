@@ -10,7 +10,6 @@ import {
   AlertController
 } from 'ionic-angular';
 import { BillProvider } from '../../providers/bill/bill';
-import { Observable } from 'rxjs/Observable';
 import { AuthProvider } from '../../providers/auth/auth';
 import { Camera } from '@ionic-native/camera'
 
