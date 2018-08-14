@@ -3,12 +3,12 @@ import {
   NavController,
   ActionSheet,
   ActionSheetController,
-  Loading,
+  //Loading,
   LoadingController,
   Platform
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { LandingPage } from '../landing/landing';
+//import { LandingPage } from '../landing/landing';
 import { BillProvider } from '../../providers/bill/bill';
 import { AuthProvider } from '../../providers/auth/auth';
 

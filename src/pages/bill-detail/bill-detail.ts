@@ -6,7 +6,7 @@ import {
   ActionSheet,
   ActionSheetController,
   Platform,
-  Alert,
+  //Alert,
   AlertController
 } from 'ionic-angular';
 import { BillProvider } from '../../providers/bill/bill';
