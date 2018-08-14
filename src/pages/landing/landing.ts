@@ -3,7 +3,9 @@ import {
   IonicPage,
   NavController,
   Loading,
-  LoadingController
+  LoadingController,
+  Alert,
+  AlertController
 } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -17,6 +19,7 @@ export class LandingPage {
   constructor(
     public navCtrl: NavController,
     public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public authProvider: AuthProvider
   ) { }
 
@@ -32,6 +35,19 @@ export class LandingPage {
     }).catch(error => {
       loading.dismiss().then(() => {
         console.error("goToBillList ",error);
+        const alert: Alert = this.alertCtrl.create({
+          message: "error: "+error,
+          buttons: [
+            { text: 'Cancel' },
+            {
+              text: 'OK',
+              handler: data => {
+                this.navCtrl.push('LandingPage');
+              }
+            }
+          ]
+        });
+        alert.present()
       });
     });
 
