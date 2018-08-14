@@ -3,10 +3,13 @@ import {
   NavController,
   ActionSheet,
   ActionSheetController,
+  Loading,
+  LoadingController,
   Platform
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { BillProvider } from '../../providers/bill/bill';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @Component({
   selector: 'page-home',
@@ -17,8 +20,10 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public actionCtrl: ActionSheetController,
+    public loadingCtrl: LoadingController,
     public platform: Platform,
-    public billProvider: BillProvider
+    public billProvider: BillProvider,
+    public authProvider: AuthProvider
   ) { }
 
   ionViewDidLoad() {
@@ -70,6 +75,23 @@ export class HomePage {
       ]
     });
     action.present();
+  }
+
+  logoutNow(): void {
+    this.authProvider.logoutUser().then(newUser => {
+      loading.dismiss().then(() => {
+        this.navCtrl.setRoot(LandingPage);
+      });
+    }).catch(error => {
+      loading.dismiss().then(() => {
+        console.error("logoutNow ",error);
+      });
+    });
+
+    const loading: Loading = this.loadingCtrl.create();
+    loading.present();
+
+    //this.navCtrl.push('LandingPage');
   }
 
 }

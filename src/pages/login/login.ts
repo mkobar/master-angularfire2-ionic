@@ -55,7 +55,7 @@ export class LoginPage {
         error => {
           this.loading.dismiss().then(() => {
             const alert: Alert = this.alertCtrl.create({
-              message: error.message,
+              message: 'loginUser '+error.message,
               buttons: [
                 {
                   text: 'OK',
