@@ -22,6 +22,8 @@ export class LandingPage {
 
   goToLogin(): void { this.navCtrl.push('LoginPage'); }
 
+  goToSignup(): void { this.navCtrl.push('SignupPage'); }
+
   goToBillList(): void {
     this.authProvider.anonymousLogin().then(newUser => {
       loading.dismiss().then(() => {
@@ -29,7 +31,7 @@ export class LandingPage {
       });
     }).catch(error => {
       loading.dismiss().then(() => {
-        console.error(error);
+        console.error("goToBillList ",error);
       });
     });
 
