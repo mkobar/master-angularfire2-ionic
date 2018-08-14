@@ -8,6 +8,7 @@ import {
   Platform
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { LandingPage } from '../landing/landing';
 import { BillProvider } from '../../providers/bill/bill';
 import { AuthProvider } from '../../providers/auth/auth';
 
@@ -78,6 +79,7 @@ export class HomePage {
   }
 
   logoutNow(): void {
+    /*** breaks flow of app - after logout cannot use anon
     this.authProvider.logoutUser().then(newUser => {
       loading.dismiss().then(() => {
         this.navCtrl.setRoot(LandingPage);
@@ -90,8 +92,9 @@ export class HomePage {
 
     const loading: Loading = this.loadingCtrl.create();
     loading.present();
+    ***/
 
-    //this.navCtrl.push('LandingPage');
+    this.navCtrl.push('LandingPage');
   }
 
 }
