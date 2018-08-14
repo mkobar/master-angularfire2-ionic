@@ -80,6 +80,7 @@ export class BillDetailPage {
     action.present();
   }
 
+/***
   uploadPicture(billId): void {
     if (this.authProvider.getUser().isAnonymous == true) {
       const alert: Alert = this.alertCtrl.create({
@@ -119,5 +120,7 @@ export class BillDetailPage {
           }
         );
     }
-  }
+ }
+***/
+
 }
