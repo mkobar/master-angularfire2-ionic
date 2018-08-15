@@ -7,8 +7,7 @@ import {
   ActionSheetController,
   Platform,
   Alert,
-  AlertController,
-  Platform
+  AlertController
 } from 'ionic-angular';
 import { BillProvider } from '../../providers/bill/bill';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -98,6 +97,17 @@ export class BillDetailPage {
       alert.present();
     } else {
       if (this.platform.is('android') || this.platform.is('ios')) {
+
+      const alert: Alert = this.alertCtrl.create({
+        message: "android or ios OK, camera broken?",
+        buttons: [
+          { text: 'Cancel' },
+          { text: 'OK' }
+          }
+        ]
+      });
+      alert.present();
+
       this.cameraPlugin
         .getPicture({
           quality: 95,
