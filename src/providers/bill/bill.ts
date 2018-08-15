@@ -20,8 +20,8 @@ export class BillProvider {
   public userId: string;
   constructor(
     public afAuth: AngularFireAuth,
-    public afDatabase: AngularFireDatabase
-    //public afStorage: AngularFireStorage
+    public afDatabase: AngularFireDatabase,
+    public afStorage: AngularFireStorage
   ) {
     this.afAuth.authState.subscribe(user => {
       this.userId = user.uid;
