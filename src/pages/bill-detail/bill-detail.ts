@@ -103,7 +103,6 @@ export class BillDetailPage {
         buttons: [
           { text: 'Cancel' },
           { text: 'OK' }
-          }
         ]
       });
       alert.present();
