@@ -13,7 +13,7 @@ import { BillProvider } from '../providers/bill/bill';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-//import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { firebaseConfig } from './credentials';
 
 class CameraMock extends Camera {
@@ -39,8 +39,8 @@ class CameraMock extends Camera {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
-    //AngularFireStorageModule
+    AngularFireDatabaseModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

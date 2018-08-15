@@ -5,13 +5,13 @@ import {
   AngularFireObject,
   AngularFireList
 } from 'angularfire2/database';
-/****
+
 import {
   AngularFireStorage,
   AngularFireStorageReference,
   AngularFireUploadTask
 } from 'angularfire2/storage';
-***/
+
 import firebase from 'firebase/app';
 
 @Injectable()
@@ -65,7 +65,6 @@ export class BillProvider {
     return this.billList.update(billId, { paid: true });
   }
 
-/*** 
   takeBillPhoto(billId: string, imageURL: string): AngularFireUploadTask {
     const storageRef: AngularFireStorageReference = this.afStorage.ref(
       `${this.userId}/${billId}/billPicture/`
@@ -75,7 +74,6 @@ export class BillProvider {
       contentType: 'image/png'
     });
   }
-***/
 
   storeDownloadUrl(billId: string, downloadUrl: string): Promise<any> {
     console.log(billId, downloadUrl);

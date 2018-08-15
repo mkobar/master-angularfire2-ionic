@@ -6,8 +6,9 @@ import {
   ActionSheet,
   ActionSheetController,
   Platform,
-  //Alert,
-  AlertController
+  Alert,
+  AlertController,
+  Platform
 } from 'ionic-angular';
 import { BillProvider } from '../../providers/bill/bill';
 import { AuthProvider } from '../../providers/auth/auth';
@@ -80,7 +81,6 @@ export class BillDetailPage {
     action.present();
   }
 
-/***
   uploadPicture(billId): void {
     if (this.authProvider.getUser().isAnonymous == true) {
       const alert: Alert = this.alertCtrl.create({
@@ -97,6 +97,7 @@ export class BillDetailPage {
       });
       alert.present();
     } else {
+      if (this.platform.is('android') || this.platform.is('ios')) {
       this.cameraPlugin
         .getPicture({
           quality: 95,
@@ -119,8 +120,10 @@ export class BillDetailPage {
             console.log('ERROR -> ' + JSON.stringify(error));
           }
         );
+      } else {
+        this.billProvider.storeDownloadUrl(this.billId, '../assets/img/logo.jpg')
+      }
     }
  }
-***/
 
 }
