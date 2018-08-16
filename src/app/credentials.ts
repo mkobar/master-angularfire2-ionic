@@ -3,6 +3,6 @@ export const firebaseConfig = {
   authDomain: 'ionic-fb-javebratt.firebaseapp.com',
   databaseURL: 'https://ionic-fb-javebratt.firebaseio.com',
   projectId: 'ionic-fb-javebratt',
-  storageBucket: '',
+  storageBucket: 'ionic-fb-javebratt.appspot.com',
   messagingSenderId: '61384504779',
 };
